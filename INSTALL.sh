@@ -217,16 +217,16 @@ setup_nginx () {
 
         port=${port:=80}
 
-        occurrence=`grep -c -h "listen $port" /etc/nginx/sites-enabled/*`
+        occurrence=`grep -o "listen $port" /etc/nginx/sites-enabled/* --exclude=$domain_name | wc -l`
 
-        if [[ $occurrence -eq 0 ]]; then
+        if [[ "$occurrence" -eq 0 ]]; then
             break
         fi
 
         echo "Port '$port' is already used"
     done
 
-    working_directory=`dirname $(readlink -f $0)`
+    working_directory=`pwd`
     site_directory=/etc/nginx/sites-available/$domain_name
 
 echo "server {
@@ -255,7 +255,7 @@ echo "server {
     error_page 404 /index.php;
 
     location ~ \\.php$ {
-        fastcgi_pass unix:/var/run/$PHP_VERSION-fpm.sock;
+        fastcgi_pass unix:/var/run/php/$PHP_VERSION-fpm.sock;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME \$realpath_root\$fastcgi_script_name;
         include fastcgi_params;
