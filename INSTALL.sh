@@ -142,7 +142,8 @@ download_php_modules () {
         $PHP_VERSION-fpm \
         $PHP_VERSION-json \
         $PHP_VERSION-xml \
-        $PHP_VERSION-bcmath
+        $PHP_VERSION-bcmath \
+        $PHP_VERSION-sqlite3
 }
 
 download_composer () {
